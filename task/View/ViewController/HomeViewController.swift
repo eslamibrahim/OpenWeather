@@ -9,7 +9,8 @@
 import UIKit
 import CoreLocation
 import PopupDialog
-
+import RxCocoa
+import RxSwift
 class HomeViewController: BaseViewController {
     
     
@@ -60,7 +61,10 @@ class HomeViewController: BaseViewController {
             self?.viewModel.selectWeathersData.onNext((data : (self?.viewModel.weathersData.value[index.row])!, count : (self?.viewModel.weathersData.value.count) ?? 0))
         } ).disposed(by: disposeBag)
         
-
+        viewModel.alertDialog.observeOn(MainScheduler.instance).subscribe(onNext: { [weak self] (title,msg) in
+            self?.showAlertDialogue(title: title, message: msg)
+        }).disposed(by: disposeBag)
+        
     }
     
     func dropDownSetUP( cities : [CityModel])  {
