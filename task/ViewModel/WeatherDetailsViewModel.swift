@@ -17,8 +17,10 @@ class WeatherDetailsViewModel: BaseViewModel {
     var TableData: Observable<[WeatherInfo]>
     let data : WeatherDetails
     var managedObjectContext: NSManagedObjectContext!
+    let localDataCount : Int
 
-    init(dependencies: Dependencies , data: WeatherDetails) {
+    init(dependencies: Dependencies , data: WeatherDetails,localDataCount : Int) {
+        self.localDataCount = localDataCount
         self.dependencies = dependencies
         self.data = data
         self.TableData = weathersData.asObservable()

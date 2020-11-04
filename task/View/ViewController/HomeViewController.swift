@@ -56,7 +56,11 @@ class HomeViewController: BaseViewController {
                       return cell
                   }
                   .disposed(by: disposeBag)
-        tableView.rx.modelSelected(WeatherDetails.self).bind(to: viewModel.selectWeathersData).disposed(by: disposeBag)
+        tableView.rx.itemSelected.asObservable().subscribe(onNext: { [weak self] index in
+            self?.viewModel.selectWeathersData.onNext((data : (self?.viewModel.weathersData.value[index.row])!, count : (self?.viewModel.weathersData.value.count) ?? 0))
+        } ).disposed(by: disposeBag)
+        
+
     }
     
     func dropDownSetUP( cities : [CityModel])  {

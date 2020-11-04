@@ -10,7 +10,8 @@ struct WeatherInfoCoredataModel {
     var id : Int32?
     var city : CityModel?
     var weatherInfo : [WeatherInfo]?
-
+    var date = Date()
+    
 
     init(weatherDetails: WeatherDetails) {
         self.city = weatherDetails.city
@@ -49,7 +50,7 @@ extension WeatherInfoCoredataModel : Persistable {
         id = entity.value(forKey: "id") as? Int32
         city = entity.value(forKey: "city") as? CityModel
         weatherInfo = entity.value(forKey: "weatherInfo") as? [WeatherInfo]
-
+        date = entity.value(forKey: "date") as! Date
     }
 
     func update(_ entity: T) {
@@ -57,7 +58,7 @@ extension WeatherInfoCoredataModel : Persistable {
         entity.setValue(city, forKey: "city")
         entity.setValue(weatherInfo, forKey: "weatherInfo")
         entity.setValue(id, forKey: "id")
-
+        entity.setValue(date, forKey: "date")
 
         do {
             try entity.managedObjectContext?.save()

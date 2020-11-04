@@ -38,6 +38,7 @@ class WeatherViewController: BaseViewController {
     }
     
     @IBAction func addAction(_ sender: Any) {
+        if viewModel.localDataCount == 5 {return}
         _ = try? self.viewModel.managedObjectContext.rx.update(WeatherInfoCoredataModel(weatherDetails: self.viewModel.data))
     }
 }

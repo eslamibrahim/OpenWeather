@@ -14,6 +14,8 @@ import CoreData
 
 typealias Dependencies = HasAPI & HasCoreData
 
+typealias CompletionWeatherObjectAndLocalDataCount = (data : WeatherDetails ,count : Int)
+
 class HomeViewModel: BaseViewModel {
     
     // Dependencies
@@ -33,7 +35,7 @@ class HomeViewModel: BaseViewModel {
 
     var locationManager : LocationService = LocationService()
         
-    var selectWeathersData = PublishSubject<WeatherDetails>()
+    var selectWeathersData = PublishSubject<CompletionWeatherObjectAndLocalDataCount>()
     var TableData: Observable<[WeatherDetails]>
     init(dependencies: Dependencies) {
         self.dependencies = dependencies
@@ -51,7 +53,7 @@ class HomeViewModel: BaseViewModel {
                  _ = try? self.managedObjectContext.rx.update(WeatherInfoCoredataModel(weatherDetails: response))
                     }
                     else{
-                        self.selectWeathersData.onNext(response)
+                        self.selectWeathersData.onNext((data :response , count : self.weathersData.value.count))
                     }
                 default:
                     break
@@ -76,7 +78,7 @@ extension HomeViewModel {
     
     func getweathersFromCoreData() {
 
-        managedObjectContext.rx.entities(WeatherInfoCoredataModel.self, sortDescriptors: []).asObservable()
+        managedObjectContext.rx.entities(WeatherInfoCoredataModel.self, sortDescriptors: [NSSortDescriptor(key: "date", ascending: false)]).asObservable()
             .subscribe(onNext: { [weak self] _categories in
                 guard let `self` = self else {return}
                 var weathers = [WeatherDetails]()
