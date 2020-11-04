@@ -62,3 +62,22 @@ extension UIViewController{
         }
     }
 }
+extension UserDefaults {
+    static func isFirstLaunch() -> Bool {
+        let isFirstLaunch = !UserDefaults.standard.bool(forKey: hasBeenLaunchedBeforeFlag)
+        if (isFirstLaunch) {
+            UserDefaults.standard.set(true, forKey: hasBeenLaunchedBeforeFlag)
+            UserDefaults.standard.synchronize()
+        }
+        return isFirstLaunch
+    }
+    static func isFirstApiCall() -> Bool {
+        let isFirstApiCall = !UserDefaults.standard.bool(forKey: firstApiCallFlag)
+        if (isFirstApiCall) {
+            UserDefaults.standard.set(true, forKey: firstApiCallFlag)
+            UserDefaults.standard.synchronize()
+        }
+        return isFirstApiCall
+    }
+    
+}

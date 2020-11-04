@@ -9,7 +9,8 @@
 import Foundation
 
 
-class CityModel: Codable {
+class CityModel: NSObject, Codable , NSCoding{
+
     var id : Int?
     var name :String?
     var  country_code : String?
@@ -17,5 +18,20 @@ class CityModel: Codable {
         case name, country_code = "country", id
     }
     
+    init(id : Int, name :String) {
+        self.id = id
+        self.name = name
+    }
     
+    required convenience init(coder aDecoder: NSCoder) {
+      let id = aDecoder.decodeObject(forKey: "id") as! Int
+      let  name = aDecoder.decodeObject(forKey: "name") as! String
+      self.init(id : id, name :name)
+  }
+
+  func encode(with coder: NSCoder) {
+      coder.encode(name, forKey: "name")
+      coder.encode(id, forKey: "id")
+  }
+
 }

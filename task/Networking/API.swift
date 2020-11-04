@@ -21,10 +21,10 @@ class API {
         
     }
 
-    // Call categories API
-    func getCategoriesDetails(param : Parameters) -> Observable<APIResult<GetCategoryResponse>> {
+    // Call  API
+    func getForecastWeatherByLatLng(lat: String, lng: String) -> Observable<APIResult<WeatherDetails>> {
         
-        return API.handleDataRequest(dataRequest: APIManager.shared.requestObservable(api: APIRouter.getCategoriesList(param))).map({ (response) -> APIResult<GetCategoryResponse> in
+        return API.handleDataRequest(dataRequest: APIManager.shared.requestObservable(api: APIRouter.getForecastWeatherByLatLng(lat: lat, lng: lng))).map({ (response) -> APIResult<WeatherDetails> in
             if (response ?? [:]).keys.contains("Error"){
                 if (response ?? [:]).keys.contains("IsInternetOff"){
                     if let isInternetOff = response!["IsInternetOff"] as? Bool{
@@ -35,15 +35,16 @@ class API {
                 }
                 return APIResult.failure(error: APICallError(critical: false, code: 1111, reason: response!["Error"] as! String, message: response!["Error"] as! String))
             }
-            let apiResponse = GetCategoryResponse(response: response)
+            let apiResponse = WeatherDetails(response: response)
             let (apiStatus, _) = (true,APICallError.init(status: .success))
             if apiStatus { return APIResult.success(value: apiResponse) }
         })
     }
-    // Call products API
-    func getProducts(param : Parameters) -> Observable<APIResult<GetProductResponse>> {
+    
+    // Call  API
+    func getForecastWeather(cityId: Int) -> Observable<APIResult<WeatherDetails>> {
         
-        return API.handleDataRequest(dataRequest: APIManager.shared.requestObservable(api: APIRouter.getProductsList(param))).map({ (response) -> APIResult<GetProductResponse> in
+        return API.handleDataRequest(dataRequest: APIManager.shared.requestObservable(api: APIRouter.getForecastWeather(cityId: cityId))).map({ (response) -> APIResult<WeatherDetails> in
             if (response ?? [:]).keys.contains("Error"){
                 if (response ?? [:]).keys.contains("IsInternetOff"){
                     if let isInternetOff = response!["IsInternetOff"] as? Bool{
@@ -54,7 +55,7 @@ class API {
                 }
                 return APIResult.failure(error: APICallError(critical: false, code: 1111, reason: response!["Error"] as! String, message: response!["Error"] as! String))
             }
-            let apiResponse = GetProductResponse(response: response)
+            let apiResponse = WeatherDetails(response: response)
             let (apiStatus, _) = (true,APICallError.init(status: .success))
             if apiStatus { return APIResult.success(value: apiResponse) }
         })

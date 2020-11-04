@@ -63,4 +63,20 @@ extension String {
         return attributedString
     }
     
+        func getFormattedDate() -> String{
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+            let formateDate = dateFormatter.date(from: self)!
+            dateFormatter.dateFormat = "MMM d, h:mm a"
+            return dateFormatter.string(from: formateDate)
+        }
+
+
+}
+
+extension Double {
+    
+     func temperatureConvertorKelvinToCelsius() -> String {
+        return String( Int (self - 273.15)) + "°C"
+    }
 }

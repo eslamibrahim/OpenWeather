@@ -21,10 +21,10 @@ final class AppCoordinator: Coordinator<Void> {
     
     override func start() -> Observable<Void> {
         // Show Movie list screen
-        return showCategoriesList()
+        return showHome()
     }
     
-    private func showCategoriesList() -> Observable<Void> {
+    private func showHome() -> Observable<Void> {
         let rootCoordinator = RootCoordinator(navigationController: navigationController, dependencies: self.dependencies)
         return coordinate(to: rootCoordinator)
     }
@@ -48,26 +48,22 @@ class RootCoordinator: Coordinator<Void>{
     }
     
     override func start() -> Observable<CoordinationResult> {
-        let viewModel = CategoryListViewModel.init(dependencies: self.dependencies)
-        let viewController = UIStoryboard.main.categoriesListViewController
+        let viewModel = HomeViewModel(dependencies: self.dependencies)
+        let viewController = UIStoryboard.main.homeViewController
         viewController.viewModel = viewModel
-        
-        viewModel.selectedCategory.asObservable().subscribe(onNext: {[weak self] category in
-            guard let `self` = self else {return}
-            guard let _category = category else {return}
-            self.pushToProducts(category: _category)
+        viewModel.selectWeathersData.asObservable().subscribe(onNext: { item in
+            self.showWeatherDetails(data: item)
         }).disposed(by: disposeBag)
-        
         rootNavigationController.pushViewController(viewController, animated: true)
         dependencies.window.rootViewController = rootNavigationController
         dependencies.window.makeKeyAndVisible()
         return Observable.never()
     }
-    
-    
-    func pushToProducts(category : Category) {
-        let productsListCoodinator = ProductsListCoodinator(navigationController: rootNavigationController, dependencies: self.dependencies, category: category)
-       _ = self.coordinate(to: productsListCoodinator)
+
+    private func showWeatherDetails(data: WeatherDetails) -> Observable<Void> {
+        let weatherDetailsCoordinator = WeatherDetailsCoordinator(navigationController: rootNavigationController, dependencies: self.dependencies, data: data)
+        return coordinate(to: weatherDetailsCoordinator)
+       return  Observable.never()
     }
     
     deinit {
@@ -75,6 +71,3 @@ class RootCoordinator: Coordinator<Void>{
     }
 }
 
-protocol PresentProductDetails {
-    func presentPopup(product : Product)
-}

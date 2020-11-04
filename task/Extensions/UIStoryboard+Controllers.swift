@@ -18,27 +18,20 @@ extension UIStoryboard {
 extension UIStoryboard {
     
     
-    var categoriesListViewController: CategoriesListViewController {
-        guard let viewController = instantiateViewController(withIdentifier: String(describing: CategoriesListViewController.self)) as? CategoriesListViewController else {
-            fatalError(String(describing: CategoriesListViewController.self) + "\(NSLocalizedString("couldn't be found in Storyboard file", comment: ""))")
-        }
-        return viewController
-    }
-    var productsViewController: ProductsViewController {
-        guard let viewController = instantiateViewController(withIdentifier: String(describing: ProductsViewController.self)) as? ProductsViewController else {
-            fatalError(String(describing: ProductsViewController.self) + "\(NSLocalizedString("couldn't be found in Storyboard file", comment: ""))")
+    var homeViewController: HomeViewController {
+        guard let viewController = instantiateViewController(withIdentifier: String(describing: HomeViewController.self)) as? HomeViewController else {
+            fatalError(String(describing: HomeViewController.self) + "\(NSLocalizedString("couldn't be found in Storyboard file", comment: ""))")
         }
         return viewController
     }
     
-    var productDetailsPopUpViewController: ProductDetailsPopUpViewController {
-        guard let viewController = instantiateViewController(withIdentifier: String(describing: ProductDetailsPopUpViewController.self)) as? ProductDetailsPopUpViewController else {
-            fatalError(String(describing: ProductDetailsPopUpViewController.self) + "\(NSLocalizedString("couldn't be found in Storyboard file", comment: ""))")
+    var weatherViewController: WeatherViewController {
+        guard let viewController = instantiateViewController(withIdentifier: String(describing: WeatherViewController.self)) as? WeatherViewController else {
+            fatalError(String(describing: WeatherViewController.self) + "\(NSLocalizedString("couldn't be found in Storyboard file", comment: ""))")
         }
         return viewController
     }
     
-
     
     
 }
